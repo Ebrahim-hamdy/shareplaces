@@ -13,7 +13,8 @@ window.fbAsyncInit = ->
   $('#sign_in').click (e) ->
     e.preventDefault()
     FB.login (response) ->
-      window.location = '/auth/facebook/callback' if response.authResponse
+      window.location = '/auth/facebook/callback' if response.authRespon
+    , scope: "email, user_tagged_places, user_friends"
       
 
   $('#sign_out').click (e) ->

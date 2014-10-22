@@ -12,13 +12,37 @@ class User < ActiveRecord::Base
 
   	def facebook
   		@facebook ||= Koala::Facebook::API.new(oauth_token)
-
-  	end
-
-  	def begin
-  		facebook.get_connection("me","tagged_places")
+      block_given? ? yield(@facebook) : @facebook
     rescue Koala::Facebook::APIError => e
       logger.info e.to_s
       nil
-  	end
-end
+    end 
+
+  	
+
+  	 def myCheckIns
+  	  
+        
+        places = []
+
+        page = facebook.get_connections('me', 'tagged_places')
+        begin
+        places += page.map {|p| p['place']}
+        end while page = page.next_page
+         
+        places.each do |place|
+        unless place['location'].is_a? String
+        puts "#{place['name']} lat:#{place['location']['latitude']} long:#{place['location']['longitude']}"
+        else
+        puts "#{place['name']} location:#{place['location']}"
+        end
+        end
+     end
+
+     def friendsCheckiIns
+      facebook.get_connections("me","friends", :fields => "tagged_places")
+     end
+
+   end 
+    
+  

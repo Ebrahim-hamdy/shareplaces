@@ -35,7 +35,6 @@ end
 gem 'omniauth-facebook'
 gem 'koala'
 gem 'nifty-generators'
-gem 'mocha'
 gem 'protected_attributes'
 gem 'geocoder'
 gem 'gmaps4rails'
